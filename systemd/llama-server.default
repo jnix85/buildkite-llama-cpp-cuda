@@ -9,12 +9,12 @@ HOST="0.0.0.0"
 PORT="8000"
 
 # Model Selection:
-# Option A: Local GGUF file path
+# Option A: Local GGUF file path (e.g. via ./scripts/download-model.sh)
 MODEL_PATH="/models/Qwen3.8-27B-Uncensored-Q4_K_M.gguf"
 
-# Option B: Hugging Face model repository (auto-download on startup)
-# If MODEL_PATH is not found on disk, HF_REPO will be used automatically.
-HF_REPO="JonathanColetti/Qwen3.8-27B-Uncensored-GGUF:Q4_K_M"
+# Option B: Hugging Face model repository (auto-download on startup if local file is absent)
+HF_REPO="JonathanColetti/Qwen3.8-27B-Uncensored-GGUF"
+HF_FILE="Qwen3.8-27B-Uncensored-Q4_K_M.gguf"
 # HF_TOKEN=""
 
 # Model alias exposed in OpenAI-compatible API (/v1/models)
