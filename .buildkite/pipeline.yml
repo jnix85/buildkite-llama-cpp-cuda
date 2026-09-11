@@ -1,0 +1,28 @@
+steps:
+  - label: ":package: Build llama-server CUDA Debian Package"
+    agents:
+      queue: "linux-medium"
+    command:
+      - "echo '--- Checking Docker Buildx & BuildKit availability'"
+      - "docker buildx version"
+      - "mkdir -p dist"
+      - "TAG=${LLAMA_TAG:-master}"
+      - "echo \"--- Building llama.cpp tag: ${TAG} for Turing (CC 7.5)\""
+      - "LLAMA_TAG=${TAG} docker buildx bake deb"
+      - "ls -la dist/"
+    artifact_paths:
+      - "dist/*.deb"
+    env:
+      DOCKER_BUILDKIT: "1"
+
+  - wait
+
+  - label: ":white_check_mark: Verify Package Artifacts"
+    agents:
+      queue: "linux-medium"
+    command:
+      - "echo '--- Downloading artifacts'"
+      - "buildkite-agent artifact download 'dist/*.deb' . || true"
+      - "echo '--- Inspecting Debian Package contents'"
+      - "dpkg -c dist/*.deb"
+      - "dpkg -I dist/*.deb"
