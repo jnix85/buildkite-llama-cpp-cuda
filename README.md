@@ -23,8 +23,10 @@ Optimized for **Sigrun** (Intel Core i9-9900K | NVIDIA GeForce RTX 2070 Super Tu
   - Automatically detects new release tags on `ggerganov/llama.cpp`.
   - Compares against the currently installed system package.
   - Compiles, packages, upgrades with `apt`, and restarts `llama-server.service` automatically.
-- **Systemd Timer & Service (`systemd/`)**:
-  - Automated daily background check (`llama-updater.timer`).
+- **Systemd Service & Timers (`systemd/`)**:
+  - `llama-server.service`: Headless daemon service unit packaged directly into the `.deb` (`/lib/systemd/system/llama-server.service`).
+  - `llama-server.default`: Environment configuration template packaged into `/etc/default/llama-server` (conffile).
+  - `llama-updater.timer` & `llama-updater.service`: Automated daily background upstream release tracker.
 
 ---
 
@@ -37,8 +39,13 @@ buildkite-llama-cpp-cuda/
 ├── .buildkite/
 │   └── pipeline.yml             # Buildkite CI/CD pipeline definition
 ├── scripts/
-│   └── auto-update-llama.sh     # Upstream release detection & auto-upgrade script
+│   ├── auto-update-llama.sh     # Upstream release detection & auto-upgrade script
+│   ├── build-deb.sh             # Host-native Debian packaging script
+│   └── download-model.sh        # GGUF model download helper for /models/
 ├── systemd/
+│   ├── llama-server.service     # Headless inference server service unit
+│   ├── llama-server-launcher.sh # Pre-flight validation & dynamic arg launcher
+│   ├── llama-server.default     # Default environment configuration template (/etc/default/llama-server)
 │   ├── llama-updater.service    # Oneshot updater service unit
 │   └── llama-updater.timer      # Daily execution timer
 └── README.md
@@ -55,6 +62,9 @@ docker buildx bake deb
 
 # Or build a specific release tag (e.g., b4800):
 LLAMA_TAG=b4800 docker buildx bake deb
+
+# Or build on host from local binaries:
+./scripts/build-deb.sh
 ```
 The generated `.deb` package will be placed directly in `./dist/llama-server-cuda_<tag>_amd64.deb`.
 
@@ -62,8 +72,39 @@ The generated `.deb` package will be placed directly in `./dist/llama-server-cud
 ```bash
 sudo apt install -y ./dist/llama-server-cuda_*.deb
 ```
+**What this installs:**
+- Binaries in `/opt/llama.cpp/` with `/usr/local/bin` symlinks (`llama-server`, `llama-cli`, `llama-bench`).
+- Dynamic shared libraries with `/etc/ld.so.conf.d/llama-cpp.conf`.
+- Service launcher `/opt/llama.cpp/bin/llama-server-launcher` with pre-flight port and model checks.
+- Systemd service unit in `/lib/systemd/system/llama-server.service`.
+- Default environment configuration template in `/etc/default/llama-server` (binds to port 8000).
+- Automatic creation of `/models/` directory with proper permissions.
 
-### 3. Build Standalone Docker Runtime Image
+### 3. Configure and Start the llama-server Service
+1. **Download or place your GGUF model** in `/models/`:
+```bash
+# Helper script to download Qwen3.8-27B-Uncensored (~16.8 GB):
+./scripts/download-model.sh
+```
+*(Or specify `HF_REPO="JonathanColetti/Qwen3.8-27B-Uncensored-GGUF:Q4_K_M"` in `/etc/default/llama-server` for automatic download).*
+
+2. **Edit your configuration** (port defaults to 8000 to avoid conflicting with local Docker services):
+```bash
+sudo nano /etc/default/llama-server
+```
+
+3. **Enable and start the daemon**:
+```bash
+sudo systemctl enable --now llama-server
+sudo systemctl status llama-server
+```
+
+4. **View server logs**:
+```bash
+journalctl -u llama-server -f -o cat
+```
+
+### 4. Build Standalone Docker Runtime Image
 ```bash
 docker buildx bake image
 ```

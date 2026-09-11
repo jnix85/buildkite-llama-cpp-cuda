@@ -1,0 +1,40 @@
+# ==============================================================================
+# llama-server Environment Configuration
+# Target: Sigrun (i9-9900K 8C | 64GB RAM | RTX 2070 Super 8GB VRAM CC 7.5 | NVMe)
+# ==============================================================================
+
+# Network binding
+HOST="0.0.0.0"
+# Note: Port 8080 is reserved by local Docker containers on Sigrun. Default is 8000.
+PORT="8000"
+
+# Model Selection:
+# Option A: Local GGUF file path
+MODEL_PATH="/models/Qwen3.8-27B-Uncensored-Q4_K_M.gguf"
+
+# Option B: Hugging Face model repository (auto-download on startup)
+# If MODEL_PATH is not found on disk, HF_REPO will be used automatically.
+HF_REPO="JonathanColetti/Qwen3.8-27B-Uncensored-GGUF:Q4_K_M"
+# HF_TOKEN=""
+
+# Model alias exposed in OpenAI-compatible API (/v1/models)
+MODEL_ALIAS="qwen-3.8-27b"
+
+# Context window size
+CTX_SIZE="8192"
+
+# GPU offload layers (23 layers for Qwen 27B hybrid; 36 layers for Qwen 8B 100% GPU)
+GPU_LAYERS="23"
+
+# CPU threads (Lock to 8 physical cores on i9-9900K, avoid hyperthreading)
+THREADS="8"
+
+# Prompt processing batch size and micro-batch size
+BATCH_SIZE="512"
+UBATCH_SIZE="512"
+
+# Hardware optimization flags for Sigrun (Turing CC 7.5):
+# - Flash attention (--flash-attn on)
+# - 4-bit KV cache quantization (--cache-type-k q4_0 --cache-type-v q4_0)
+# - NVMe memory mapping with RAM locking to prevent swap stutter (--load-mode mmap+mlock)
+EXTRA_FLAGS="--flash-attn on --cache-type-k q4_0 --cache-type-v q4_0 --load-mode mmap+mlock"

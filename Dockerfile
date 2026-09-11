@@ -22,7 +22,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     ninja-build \
     ccache \
     pkg-config \
-    ca-certificates
+    ca-certificates \
+    libssl-dev
 
 WORKDIR /workspace
 
@@ -43,7 +44,8 @@ RUN --mount=type=cache,target=/root/.cache/ccache \
       -DCMAKE_CUDA_ARCHITECTURES=${CUDA_ARCH} \
       -DCMAKE_BUILD_TYPE=Release \
       -DLLAMA_BUILD_TESTS=OFF \
-      -DLLAMA_BUILD_EXAMPLES=ON && \
+      -DLLAMA_BUILD_EXAMPLES=ON \
+      -DLLAMA_OPENSSL=ON && \
     cmake --build build --config Release -j${BUILD_THREADS}
 
 # ==============================================================================
@@ -60,14 +62,26 @@ COPY --from=builder /workspace/llama.cpp/build/bin /staging/opt/llama.cpp
 COPY --from=builder /workspace/llama.cpp/LICENSE /staging/opt/llama.cpp/LICENSE
 
 RUN mkdir -p /staging/DEBIAN \
+             /staging/opt/llama.cpp/bin \
              /staging/usr/local/bin \
              /staging/etc/ld.so.conf.d \
              /staging/etc/default \
-             /staging/etc/systemd/system \
+             /staging/lib/systemd/system \
              /dist
 
 # Register library path
 RUN echo "/opt/llama.cpp" > /staging/etc/ld.so.conf.d/llama-cpp.conf
+
+# Copy systemd service unit, environment template, and launcher script
+COPY systemd/llama-server.service /staging/lib/systemd/system/llama-server.service
+COPY systemd/llama-server.default /staging/etc/default/llama-server
+COPY systemd/llama-server-launcher.sh /staging/opt/llama.cpp/bin/llama-server-launcher
+
+# Mark conffiles
+RUN cat << 'CONFFILES_EOF' > /staging/DEBIAN/conffiles
+/etc/default/llama-server
+/etc/ld.so.conf.d/llama-cpp.conf
+CONFFILES_EOF
 
 # Control file
 RUN PKG_VER=$(echo "${LLAMA_TAG}" | tr -d "v") && \
@@ -77,7 +91,7 @@ Version: ${PKG_VER}
 Section: science
 Priority: optional
 Architecture: amd64
-Depends: libc6 (>= 2.34), libstdc++6 (>= 11), libgomp1, nvidia-cuda-toolkit | libcudart12
+Depends: libc6 (>= 2.34), libstdc++6 (>= 11), libgomp1, libnccl2, libcublas12, libssl3 | libssl3t64, nvidia-cuda-toolkit | libcudart12
 Maintainer: Sigrun Systems <osadmin@sigrun>
 Description: High-performance llama.cpp server and CLI tools compiled with CUDA Turing (CC 7.5) support.
  Built via BuildKit for automated deployment.
@@ -91,16 +105,25 @@ ldconfig
 ln -sf /opt/llama.cpp/llama-server /usr/local/bin/llama-server
 ln -sf /opt/llama.cpp/llama-cli /usr/local/bin/llama-cli
 ln -sf /opt/llama.cpp/llama-bench /usr/local/bin/llama-bench
+ln -sf /opt/llama.cpp/bin/llama-server-launcher /usr/local/bin/llama-server-launcher
+if [ ! -d /models ]; then
+    mkdir -p /models
+    chown -R osadmin:osadmin /models 2>/dev/null || true
+    chmod 775 /models 2>/dev/null || true
+fi
+if [ -d /run/systemd/system ]; then
+    systemctl daemon-reload >/dev/null 2>&1 || true
+fi
 exit 0
 POSTINST_EOF
 
 RUN cat << 'PRERM_EOF' > /staging/DEBIAN/prerm
 #!/bin/sh
 set -e
-if systemctl is-active --quiet llama-server 2>/dev/null; then
+if [ -d /run/systemd/system ] && systemctl is-active --quiet llama-server 2>/dev/null; then
     systemctl stop llama-server 2>/dev/null || true
 fi
-rm -f /usr/local/bin/llama-server /usr/local/bin/llama-cli /usr/local/bin/llama-bench
+rm -f /usr/local/bin/llama-server /usr/local/bin/llama-cli /usr/local/bin/llama-bench /usr/local/bin/llama-server-launcher
 exit 0
 PRERM_EOF
 
@@ -108,10 +131,14 @@ RUN cat << 'POSTRM_EOF' > /staging/DEBIAN/postrm
 #!/bin/sh
 set -e
 ldconfig
+if [ -d /run/systemd/system ]; then
+    systemctl daemon-reload >/dev/null 2>&1 || true
+fi
 exit 0
 POSTRM_EOF
 
-RUN chmod 755 /staging/DEBIAN/postinst /staging/DEBIAN/prerm /staging/DEBIAN/postrm
+RUN chmod 755 /staging/DEBIAN/postinst /staging/DEBIAN/prerm /staging/DEBIAN/postrm /staging/opt/llama.cpp/bin/llama-server-launcher && \
+    chmod 644 /staging/DEBIAN/control /staging/DEBIAN/conffiles /staging/lib/systemd/system/llama-server.service /staging/etc/default/llama-server /staging/etc/ld.so.conf.d/llama-cpp.conf
 
 # Build debian package
 RUN PKG_VER=$(echo "${LLAMA_TAG}" | tr -d "v") && \

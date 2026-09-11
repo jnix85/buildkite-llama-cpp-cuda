@@ -1,0 +1,19 @@
+[Unit]
+Description=llama.cpp Headless Inference Server
+Documentation=https://github.com/ggerganov/llama.cpp
+After=network.target
+
+[Service]
+Type=simple
+User=osadmin
+Group=osadmin
+EnvironmentFile=-/etc/default/llama-server
+ExecStart=/opt/llama.cpp/bin/llama-server-launcher
+Restart=on-failure
+RestartSec=5s
+RestartPreventExitStatus=78
+LimitMEMLOCK=infinity
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target
