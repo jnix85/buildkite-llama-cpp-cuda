@@ -5,8 +5,9 @@ After=network.target
 
 [Service]
 Type=simple
-User=osadmin
-Group=osadmin
+User=llama-cpp
+Group=llama-cpp
+WorkingDirectory=/home/llama-cpp
 EnvironmentFile=-/etc/default/llama-server
 ExecStart=/opt/llama.cpp/bin/llama-server-launcher
 Restart=on-failure

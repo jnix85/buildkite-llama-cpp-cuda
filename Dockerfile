@@ -28,7 +28,11 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 WORKDIR /workspace
 
 # Clone specific release tag or branch
-RUN git clone --depth 1 --branch ${LLAMA_TAG} https://github.com/ggerganov/llama.cpp.git /workspace/llama.cpp
+RUN if [ -n "${LLAMA_TAG}" ]; then \
+        git clone --depth 1 --branch "${LLAMA_TAG}" https://github.com/ggerganov/llama.cpp.git /workspace/llama.cpp; \
+    else \
+        git clone --depth 1 https://github.com/ggerganov/llama.cpp.git /workspace/llama.cpp; \
+    fi
 
 WORKDIR /workspace/llama.cpp
 
@@ -84,7 +88,9 @@ RUN cat << 'CONFFILES_EOF' > /staging/DEBIAN/conffiles
 CONFFILES_EOF
 
 # Control file
-RUN PKG_VER=$(echo "${LLAMA_TAG}" | tr -d "v") && \
+RUN TAG="${LLAMA_TAG:-v0.4.0}" && \
+    [ -z "${TAG}" ] && TAG="v0.4.0"; \
+    PKG_VER=$(echo "${TAG}" | tr -d "v") && \
     cat << CONTROL_EOF > /staging/DEBIAN/control
 Package: llama-server-cuda
 Version: ${PKG_VER}
@@ -106,6 +112,11 @@ ln -sf /opt/llama.cpp/llama-server /usr/local/bin/llama-server
 ln -sf /opt/llama.cpp/llama-cli /usr/local/bin/llama-cli
 ln -sf /opt/llama.cpp/llama-bench /usr/local/bin/llama-bench
 ln -sf /opt/llama.cpp/bin/llama-server-launcher /usr/local/bin/llama-server-launcher
+if id -u llama-cpp >/dev/null 2>&1; then
+    mkdir -p /home/llama-cpp/models
+    chown -R llama-cpp:llama-cpp /home/llama-cpp 2>/dev/null || true
+    chmod 775 /home/llama-cpp/models 2>/dev/null || true
+fi
 if [ ! -d /models ]; then
     mkdir -p /models
     chown -R osadmin:osadmin /models 2>/dev/null || true
@@ -141,7 +152,9 @@ RUN chmod 755 /staging/DEBIAN/postinst /staging/DEBIAN/prerm /staging/DEBIAN/pos
     chmod 644 /staging/DEBIAN/control /staging/DEBIAN/conffiles /staging/lib/systemd/system/llama-server.service /staging/etc/default/llama-server /staging/etc/ld.so.conf.d/llama-cpp.conf
 
 # Build debian package
-RUN PKG_VER=$(echo "${LLAMA_TAG}" | tr -d "v") && \
+RUN TAG="${LLAMA_TAG:-v0.4.0}" && \
+    [ -z "${TAG}" ] && TAG="v0.4.0"; \
+    PKG_VER=$(echo "${TAG}" | tr -d "v") && \
     dpkg-deb --build --root-owner-group /staging /dist/llama-server-cuda_${PKG_VER}_amd64.deb
 
 # ==============================================================================
