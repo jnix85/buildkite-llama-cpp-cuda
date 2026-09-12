@@ -7,7 +7,7 @@ ARG UBUNTU_VERSION=22.04
 # ==============================================================================
 FROM nvidia/cuda:${CUDA_VERSION}-devel-ubuntu${UBUNTU_VERSION} AS builder
 
-ARG LLAMA_TAG=master
+ARG LLAMA_TAG=v0.4.0
 ARG CUDA_ARCH=75
 ARG BUILD_THREADS=8
 
@@ -57,7 +57,7 @@ RUN --mount=type=cache,target=/root/.cache/ccache \
 # ==============================================================================
 FROM ubuntu:${UBUNTU_VERSION} AS packager
 
-ARG LLAMA_TAG=master
+ARG LLAMA_TAG=v0.4.0
 WORKDIR /packager
 
 RUN apt-get update && apt-get install -y --no-install-recommends binutils ca-certificates && rm -rf /var/lib/apt/lists/*
@@ -90,7 +90,8 @@ CONFFILES_EOF
 # Control file
 RUN TAG="${LLAMA_TAG:-v0.4.0}" && \
     [ -z "${TAG}" ] && TAG="v0.4.0"; \
-    PKG_VER=$(echo "${TAG}" | tr -d "v") && \
+    PKG_VER=$(echo "${TAG}" | sed -E 's/^v//') && \
+    if ! echo "${PKG_VER}" | grep -q '^[0-9]'; then PKG_VER="0.0.0+${PKG_VER}"; fi && \
     cat << CONTROL_EOF > /staging/DEBIAN/control
 Package: llama-server-cuda
 Version: ${PKG_VER}
@@ -154,7 +155,8 @@ RUN chmod 755 /staging/DEBIAN/postinst /staging/DEBIAN/prerm /staging/DEBIAN/pos
 # Build debian package
 RUN TAG="${LLAMA_TAG:-v0.4.0}" && \
     [ -z "${TAG}" ] && TAG="v0.4.0"; \
-    PKG_VER=$(echo "${TAG}" | tr -d "v") && \
+    PKG_VER=$(echo "${TAG}" | sed -E 's/^v//') && \
+    if ! echo "${PKG_VER}" | grep -q '^[0-9]'; then PKG_VER="0.0.0+${PKG_VER}"; fi && \
     dpkg-deb --build --root-owner-group /staging /dist/llama-server-cuda_${PKG_VER}_amd64.deb
 
 # ==============================================================================
