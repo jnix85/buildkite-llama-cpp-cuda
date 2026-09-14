@@ -19,14 +19,9 @@ Optimized for **Sigrun** (Intel Core i9-9900K | NVIDIA GeForce RTX 2070 Super Tu
 - **Buildkite CI/CD Pipeline (`.buildkite/pipeline.yml`)**:
   - Automated build on push, release tag, or scheduled cron trigger.
   - Uploads generated `.deb` packages as pipeline artifacts.
-- **Automated Upstream Release Tracker (`scripts/auto-update-llama.sh`)**:
-  - Automatically detects new release tags on `ggerganov/llama.cpp`.
-  - Compares against the currently installed system package.
-  - Compiles, packages, upgrades with `apt`, and restarts `llama-server.service` automatically.
 - **Systemd Service & Timers (`systemd/`)**:
   - `llama-server.service`: Headless daemon service unit packaged directly into the `.deb` (`/lib/systemd/system/llama-server.service`).
   - `llama-server.default`: Environment configuration template packaged into `/etc/default/llama-server` (conffile).
-  - `llama-updater.timer` & `llama-updater.service`: Automated daily background upstream release tracker.
 
 ---
 
@@ -39,15 +34,12 @@ buildkite-llama-cpp-cuda/
 ├── .buildkite/
 │   └── pipeline.yml             # Buildkite CI/CD pipeline definition
 ├── scripts/
-│   ├── auto-update-llama.sh     # Upstream release detection & auto-upgrade script
 │   ├── build-deb.sh             # Host-native Debian packaging script
 │   └── download-model.sh        # GGUF model download helper for /models/
 ├── systemd/
 │   ├── llama-server.service     # Headless inference server service unit
 │   ├── llama-server-launcher.sh # Pre-flight validation & dynamic arg launcher
-│   ├── llama-server.default     # Default environment configuration template (/etc/default/llama-server)
-│   ├── llama-updater.service    # Oneshot updater service unit
-│   └── llama-updater.timer      # Daily execution timer
+│   └── llama-server.default     # Default environment configuration template (/etc/default/llama-server)
 └── README.md
 ```
 
@@ -111,31 +103,24 @@ docker buildx bake image
 
 ---
 
-## Automated Upstream Release Tracking
-
-### Run the Release Tracker Manually:
-```bash
-./scripts/auto-update-llama.sh
-```
-
-### Install the Daily Systemd Timer:
-```bash
-sudo cp systemd/llama-updater.* /etc/systemd/system/
-sudo systemctl daemon-reload
-sudo systemctl enable --now llama-updater.timer
-
-# Check timer status
-systemctl list-timers llama-updater.timer
-
-# View execution logs
-journalctl -u llama-updater.service -f
-```
-
----
-
 ## Buildkite CI Integration
 
 In Buildkite:
 1. Connect repository `git@github.com:jnix85/buildkite-llama-cpp-cuda.git`.
 2. The pipeline `.buildkite/pipeline.yml` runs on the hosted queue `linux-medium` (`agents: { queue: "linux-medium" }`) and executes `docker buildx bake deb` and publishes the `.deb` file as a Buildkite artifact.
 3. Schedule nightly builds or configure a webhook trigger to build upon new tags.
+
+For a dedicated artifact-publishing pipeline, configure a second Buildkite pipeline to use `.buildkite/pipeline-artifact-upload.yml`. It builds and verifies the `.deb`, explicitly uploads it with `buildkite-agent artifact upload`, and confirms it can be downloaded from the resulting Buildkite build. Buildkite artifacts are stored against builds rather than in a separate package repository; consumers can retrieve them with `buildkite-agent artifact download`.
+
+To run both Buildkite pipelines in sequence, configure a third pipeline to use `.buildkite/pipeline-meta.yml`. It synchronously triggers the main build pipeline first, then triggers the artifact-upload pipeline only when the first pipeline succeeds. The default pipeline slugs are `buildkite-llama-cpp-cuda` and `buildkite-llama-cpp-cuda-artifact-upload`; update `BUILD_PIPELINE_SLUG` and `ARTIFACT_PIPELINE_SLUG` in the meta pipeline if the configured slugs differ.
+
+## GitHub Actions and Packages
+
+The workflow `.github/workflows/build-and-publish.yml` provides the equivalent GitHub Actions flow:
+
+- Builds the Debian package with `docker buildx bake deb`.
+- Uploads the `.deb` as a 30-day GitHub Actions artifact.
+- Downloads and inspects the artifact with `dpkg`.
+- Builds and publishes the runtime image with `docker buildx bake image` to GitHub Container Registry (`ghcr.io/<owner>/<repository>`).
+
+Pull requests run the build and verification jobs but do not publish packages. Pushes to `main`, `v*` tags, and manual workflow runs publish the image. The repository's Actions settings must allow `GITHUB_TOKEN` to write packages. GitHub Packages does not provide a native Debian repository, so `.deb` files are stored as workflow artifacts rather than published to GHCR.

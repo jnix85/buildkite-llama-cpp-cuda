@@ -1,0 +1,39 @@
+# Buildkite meta pipeline.
+#
+# Configure this file as a separate Buildkite pipeline. The trigger steps are
+# synchronous by default, so the second pipeline is not triggered until the
+# first pipeline completes successfully.
+
+env:
+  # Override these in the Buildkite pipeline environment if your pipeline slugs
+  # differ from the defaults below.
+  BUILD_PIPELINE_SLUG: "buildkite-llama-cpp-cuda"
+  ARTIFACT_PIPELINE_SLUG: "buildkite-llama-cpp-cuda-artifact-upload"
+
+steps:
+  - label: ":hammer_and_wrench: Build package pipeline"
+    key: "build-package"
+    trigger: "${BUILD_PIPELINE_SLUG}"
+    async: false
+    build:
+      message: "${BUILDKITE_MESSAGE}"
+      commit: "${BUILDKITE_COMMIT}"
+      branch: "${BUILDKITE_BRANCH}"
+      env:
+        LLAMA_TAG: "${LLAMA_TAG}"
+      meta_data:
+        triggered_by_pipeline: "${BUILDKITE_PIPELINE_SLUG}"
+
+  - label: ":package: Publish artifact pipeline"
+    key: "publish-artifact"
+    depends_on: "build-package"
+    trigger: "${ARTIFACT_PIPELINE_SLUG}"
+    async: false
+    build:
+      message: "${BUILDKITE_MESSAGE}"
+      commit: "${BUILDKITE_COMMIT}"
+      branch: "${BUILDKITE_BRANCH}"
+      env:
+        LLAMA_TAG: "${LLAMA_TAG}"
+      meta_data:
+        triggered_by_pipeline: "${BUILDKITE_PIPELINE_SLUG}"

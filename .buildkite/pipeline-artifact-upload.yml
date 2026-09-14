@@ -1,0 +1,47 @@
+# Buildkite artifact publishing pipeline.
+#
+# Configure a separate Buildkite pipeline to use this file when you want a
+# dedicated build whose artifacts are retained in Buildkite's artifact store.
+# Buildkite artifacts belong to a build and are not published to a separate
+# package repository. Use `buildkite-agent artifact download` from another
+# build or pipeline when consuming them.
+
+env:
+  DOCKER_BUILDKIT: "1"
+
+steps:
+  - label: ":package: Build and upload llama-server Debian package"
+    key: "publish-deb"
+    agents:
+      queue: "linux-medium"
+    command:
+      - "echo '--- Checking Docker Buildx & BuildKit availability'"
+      - "docker buildx version"
+      - "mkdir -p dist"
+      - "TAG=${LLAMA_TAG:-master}"
+      - "echo \"--- Building llama.cpp tag: ${TAG} for Turing (CC 7.5)\""
+      - "LLAMA_TAG=${TAG} docker buildx bake deb"
+      - "ls -la dist/"
+      - "echo '--- Inspecting Debian package'"
+      - "dpkg -c dist/*.deb"
+      - "dpkg -I dist/*.deb"
+      - "echo '--- Uploading Debian package to Buildkite artifact storage'"
+      - "buildkite-agent artifact upload 'dist/*.deb'"
+    timeout_in_minutes: 60
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+    # Publish only release branches/tags by default. Remove or customize this
+    # condition when configuring the dedicated Buildkite pipeline.
+    if: "build.branch == \"main\" || build.tag != null"
+
+  - wait
+
+  - label: ":white_check_mark: Confirm uploaded artifact"
+    agents:
+      queue: "linux-medium"
+    command:
+      - "buildkite-agent artifact download 'dist/*.deb' ."
+      - "test -n \"$(find dist -maxdepth 1 -name '*.deb' -print -quit)\""
+      - "dpkg-deb --info dist/*.deb"

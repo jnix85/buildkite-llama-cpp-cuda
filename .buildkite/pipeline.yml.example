@@ -1,0 +1,201 @@
+# Buildkite pipeline configuration reference.
+#
+# Copy this file to .buildkite/pipeline.yml and remove or adapt the example
+# sections you do not need. YAML comments are intentional: they document the
+# supported shape of common Buildkite pipeline and step configuration without
+# enabling settings that depend on a particular Buildkite organization.
+#
+# Buildkite pipeline documentation:
+# https://buildkite.com/docs/pipelines/defining-steps
+
+# -----------------------------------------------------------------------------
+# Pipeline-level configuration
+# -----------------------------------------------------------------------------
+
+# The pipeline definition is normally a mapping whose main key is `steps`.
+# These optional top-level keys can also be defined in pipeline YAML:
+
+# env:
+#   # Environment variables available to every command in this pipeline.
+#   # Use Buildkite secrets/plugins for credentials; do not commit secrets here.
+#   DOCKER_BUILDKIT: "1"
+#   CI: "true"
+
+# agents:
+#   # Default agent targeting constraints inherited by steps without their own
+#   # `agents` mapping. Values are organization-specific agent tags.
+#   queue: "linux-medium"
+#   provider: "gcp"
+
+# notify:
+#   # Pipeline-level notification rules. Step-level `notify` can be used for
+#   # more targeted notifications.
+#   - slack: "#builds"
+#   - email: "release@example.com"
+#     if: "build.state == \"failed\""
+#
+# Common notification targets include `slack`, `email`, `github_commit_status`,
+# `pagerduty_change_event`, and `webhook`. Configure integrations in Buildkite.
+
+# -----------------------------------------------------------------------------
+# Steps
+# -----------------------------------------------------------------------------
+
+steps:
+  # A command step runs shell commands on one agent.
+  - label: ":package: Build llama-server CUDA Debian Package"
+    key: "build-deb"
+    agents:
+      # Step-specific agent tags override pipeline-level `agents`.
+      queue: "linux-medium"
+    command:
+      # `command` may be a single string or an ordered list of shell commands.
+      - "echo '--- Checking Docker Buildx & BuildKit availability'"
+      - "docker buildx version"
+      - "mkdir -p dist"
+      - "TAG=${LLAMA_TAG:-master}"
+      - "echo \"--- Building llama.cpp tag: ${TAG} for Turing (CC 7.5)\""
+      - "LLAMA_TAG=${TAG} docker buildx bake deb"
+      - "ls -la dist/"
+    artifact_paths:
+      # Artifacts are uploaded after the command completes. Globs are allowed.
+      - "dist/*.deb"
+    env:
+      # Step-level environment overrides pipeline-level values.
+      DOCKER_BUILDKIT: "1"
+    timeout_in_minutes: 60
+    retry:
+      # Retry only agent failures, not a reproducible command failure.
+      automatic:
+        - exit_status: -1
+          limit: 2
+    # `soft_fail` allows the build to continue while recording a non-passing
+    # result. It can be `true`, or a list of exit-status mappings.
+    # soft_fail:
+    #   - exit_status: 1
+    #     reason: "Command failed, but this is non-blocking"
+    # concurrency: 1
+    # concurrency_group: "llama-cpp-deb-build"
+    # branches: "main develop feature/*"
+    # if: "build.branch == \"main\" || build.tag != null"
+    # skip: "[skip ci]"
+    # depends_on: "prepare"
+    # plugins:
+    #   - docker-login#v3.0.0:
+    #       username: "$$DOCKER_USERNAME"
+    #       password: "$$DOCKER_PASSWORD"
+    # notify:
+    #   - slack: "#builds"
+
+  # `wait` creates a dependency barrier. All prior steps must finish before
+  # subsequent steps start. `wait: ~` is equivalent to a plain wait step.
+  - wait
+
+  # A second command step can download artifacts produced earlier in the build.
+  - label: ":white_check_mark: Verify Package Artifacts"
+    key: "verify-deb"
+    agents:
+      queue: "linux-medium"
+    command:
+      - "echo '--- Downloading artifacts'"
+      - "buildkite-agent artifact download 'dist/*.deb' ."
+      - "echo '--- Inspecting Debian Package contents'"
+      - "dpkg -c dist/*.deb"
+      - "dpkg -I dist/*.deb"
+    depends_on: "build-deb"
+    timeout_in_minutes: 15
+
+  # ---------------------------------------------------------------------------
+  # Optional step types and controls
+  # ---------------------------------------------------------------------------
+  # Remove the examples below, or enable and customize them as needed.
+
+  # A group runs its child steps together and presents them as one UI section.
+  # - group: ":mag: Checks"
+  #   key: "checks"
+  #   steps:
+  #     - label: ":lint-roller: Shell lint"
+  #       command: "shellcheck scripts/*.sh systemd/*.sh"
+  #       agents:
+  #         queue: "linux-medium"
+  #     - label: ":test_tube: Package smoke test"
+  #       command: "./scripts/build-deb.sh --check"
+  #   depends_on: "build-deb"
+
+  # A block pauses the build until a user unblocks it. `prompt` and `fields`
+  # collect optional metadata which commands can read from environment variables.
+  # - block: ":rocket: Approve release"
+  #   key: "approve-release"
+  #   prompt: "Deploy the package to the release repository?"
+  #   fields:
+  #     - select: "release_channel"
+  #       label: "Release channel"
+  #       options:
+  #         - label: "Stable"
+  #           value: "stable"
+  #         - label: "Candidate"
+  #           value: "candidate"
+  #       required: true
+  #   depends_on: "verify-deb"
+
+  # An input step collects user-provided values without blocking on approval.
+  # - input: "Select llama.cpp version"
+  #   key: "select-version"
+  #   fields:
+  #     - text: "LLAMA_TAG"
+  #       label: "Upstream tag"
+  #       hint: "For example, b4800 or master"
+  #       default: "master"
+  #       required: true
+
+  # A trigger step starts another Buildkite pipeline.
+  # - trigger: "llama-cpp-release"
+  #   label: ":shipit: Publish package"
+  #   build:
+  #     message: "Release ${BUILDKITE_BUILD_NUMBER}"
+  #     branch: "main"
+  #     commit: "${BUILDKITE_COMMIT}"
+  #     meta_data:
+  #       source_pipeline: "${BUILDKITE_PIPELINE_SLUG}"
+  #   depends_on: "approve-release"
+
+  # `parallelism` creates multiple copies of a command step. The copy index is
+  # available as BUILDKITE_PARALLEL_JOB and the total as BUILDKITE_PARALLEL_JOB_COUNT.
+  # - label: ":test_tube: Parallel test shard"
+  #   command: "./scripts/run-tests.sh --shard ${BUILDKITE_PARALLEL_JOB}"
+  #   parallelism: 4
+
+  # A command can be skipped, made conditional, or allowed to fail:
+  # - label: ":bar_chart: Benchmark"
+  #   command: "./scripts/benchmark.sh"
+  #   branches: "main"
+  #   if: "build.message !~ /benchmark/"
+  #   skip: "Set BENCHMARK=1 to run benchmarks"
+  #   soft_fail: true
+
+  # -----------------------------------------------------------------------------
+  # Frequently used step options
+  # -----------------------------------------------------------------------------
+  # label: Display name in the Buildkite UI. `name` is an alias accepted by
+  # some step types; prefer `label` for command steps.
+  # key: Stable identifier used by `depends_on` and dynamic pipeline uploads.
+  # command: Shell string or list of shell strings to execute.
+  # agents: Agent tag mapping, such as `{ queue: "linux-medium" }`.
+  # env: Step-scoped environment variables.
+  # artifact_paths: Files or globs to upload after the step.
+  # depends_on: One key, a list of keys, or `~` for no dependency.
+  # concurrency: Maximum number of jobs in this step's concurrency group.
+  # concurrency_group: Shared name for a cross-build concurrency limit.
+  # timeout_in_minutes: Hard command timeout.
+  # retry: Automatic retry rules or an integer retry limit.
+  # cancel_on_build_failing: Cancel this step once another step fails.
+  # branches: Branch pattern filter.
+  # if: Buildkite condition expression.
+  # skip: Boolean or skip message.
+  # soft_fail: Keep the build running after an allowed failure.
+  # plugins: Ordered plugin configuration list.
+  # notify: Step-specific notifications.
+  # parallelism: Number of parallel copies of a command step.
+  # priority: Scheduling priority for the step.
+  # signal: Signal sent when Buildkite cancels a running command (for example,
+  # SIGTERM), allowing tools to clean up before exit.
