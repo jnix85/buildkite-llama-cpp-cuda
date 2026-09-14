@@ -1,11 +1,13 @@
-# Buildkite artifact publishing pipeline.
+# Buildkite artifact and package publishing pipeline.
 #
-# Configure a separate Buildkite pipeline to use this file when you want a
-# dedicated build whose artifacts are retained in Buildkite's artifact store.
-# Buildkite artifacts belong to a build and are not published to a separate
-# package repository. Use `buildkite-agent artifact download` from another
-# build or pipeline when consuming them.
-
+# Publishes Debian package (.deb) build artifacts to Buildkite artifact storage
+# and pushes releases to the Buildkite Package Registry via the Packages API.
+#
+# Required Environment Variables:
+#   BUILDKITE_PACKAGE_TOKEN     - API token with write_packages and read_packages scopes
+#   BUILDKITE_ORGANIZATION_SLUG - Target Buildkite organization slug
+#   BUILDKITE_REGISTRY_SLUG     - Target Buildkite package registry slug
+---
 env:
   DOCKER_BUILDKIT: "1"
 
@@ -25,6 +27,14 @@ steps:
       - "dpkg -I dist/*.deb"
       - "echo '--- Uploading Debian package to Buildkite artifact storage'"
       - "buildkite-agent artifact upload 'dist/*.deb'"
+      - "echo '--- Validating Package Registry environment variables'"
+      - "test -n \"${BUILDKITE_PACKAGE_TOKEN:-}\" || { echo 'BUILDKITE_PACKAGE_TOKEN is required'; exit 1; }"
+      - "test -n \"${BUILDKITE_ORGANIZATION_SLUG:-}\" || { echo 'BUILDKITE_ORGANIZATION_SLUG is required'; exit 1; }"
+      - "test -n \"${BUILDKITE_REGISTRY_SLUG:-}\" || { echo 'BUILDKITE_REGISTRY_SLUG is required'; exit 1; }"
+      - "DEB_FILE=$(find dist -maxdepth 1 -name '*.deb' -print -quit)"
+      - "test -n \"${DEB_FILE}\" || { echo 'Debian package not found in dist/'; exit 1; }"
+      - "echo \"--- Uploading $${DEB_FILE} to Buildkite Package Registry (${BUILDKITE_ORGANIZATION_SLUG}/${BUILDKITE_REGISTRY_SLUG})\""
+      - "curl -fsSL -X POST \"https://api.buildkite.com/v2/packages/organizations/${BUILDKITE_ORGANIZATION_SLUG}/registries/${BUILDKITE_REGISTRY_SLUG}/packages\" -H \"Authorization: Bearer ${BUILDKITE_PACKAGE_TOKEN}\" -F \"file=@$${DEB_FILE}\""
     timeout_in_minutes: 60
     retry:
       automatic:
@@ -33,10 +43,13 @@ steps:
 
   - wait
 
-  - label: ":white_check_mark: Confirm uploaded artifact"
+  - label: ":white_check_mark: Confirm uploaded artifact and registry package"
     agents:
       queue: "linux-medium"
     command:
+      - "echo '--- Downloading artifact from Buildkite artifact storage'"
       - "buildkite-agent artifact download 'dist/*.deb' ."
       - "test -n \"$(find dist -maxdepth 1 -name '*.deb' -print -quit)\""
       - "dpkg-deb --info dist/*.deb"
+      - "echo '--- Verifying package in Buildkite Package Registry'"
+      - "curl -fsSL -H \"Authorization: Bearer ${BUILDKITE_PACKAGE_TOKEN}\" -X GET \"https://api.buildkite.com/v2/packages/organizations/${BUILDKITE_ORGANIZATION_SLUG}/registries/${BUILDKITE_REGISTRY_SLUG}/packages\" | grep -q 'llama-server-cuda'"
