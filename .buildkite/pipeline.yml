@@ -1,6 +1,6 @@
 # The connected Buildkite pipeline uses this file as its meta pipeline.
 # It builds first, then publishes the artifact only after that build succeeds.
-
+---
 env:
   BUILD_PIPELINE_SLUG: "buildkite-llama-cpp-cuda-build"
   ARTIFACT_PIPELINE_SLUG: "buildkite-llama-cpp-cuda-artifact-upload"
@@ -15,7 +15,7 @@ steps:
       commit: "${BUILDKITE_COMMIT}"
       branch: "${BUILDKITE_BRANCH}"
       env:
-        LLAMA_TAG: "${LLAMA_TAG}"
+        LLAMA_TAG: "${LLAMA_TAG:-master}"
       meta_data:
         triggered_by_pipeline: "${BUILDKITE_PIPELINE_SLUG}"
 
@@ -29,6 +29,7 @@ steps:
       commit: "${BUILDKITE_COMMIT}"
       branch: "${BUILDKITE_BRANCH}"
       env:
-        LLAMA_TAG: "${LLAMA_TAG}"
+        LLAMA_TAG: "${LLAMA_TAG:-master}"
       meta_data:
         triggered_by_pipeline: "${BUILDKITE_PIPELINE_SLUG}"
+

@@ -28,7 +28,9 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 WORKDIR /workspace
 
 # Clone specific release tag or branch
-RUN git clone --depth 1 --branch ${LLAMA_TAG} https://github.com/ggerganov/llama.cpp.git /workspace/llama.cpp
+RUN TAG="${LLAMA_TAG:-master}" && \
+    git clone --depth 1 --branch "${TAG}" https://github.com/ggerganov/llama.cpp.git /workspace/llama.cpp
+
 
 WORKDIR /workspace/llama.cpp
 
@@ -84,7 +86,8 @@ RUN cat << 'CONFFILES_EOF' > /staging/DEBIAN/conffiles
 CONFFILES_EOF
 
 # Control file
-RUN PKG_VER=$(echo "${LLAMA_TAG}" | tr -d "v") && \
+RUN TAG="${LLAMA_TAG:-master}" && \
+    PKG_VER=$(echo "${TAG}" | tr -d "v") && \
     cat << CONTROL_EOF > /staging/DEBIAN/control
 Package: llama-server-cuda
 Version: ${PKG_VER}
@@ -141,7 +144,8 @@ RUN chmod 755 /staging/DEBIAN/postinst /staging/DEBIAN/prerm /staging/DEBIAN/pos
     chmod 644 /staging/DEBIAN/control /staging/DEBIAN/conffiles /staging/lib/systemd/system/llama-server.service /staging/etc/default/llama-server /staging/etc/ld.so.conf.d/llama-cpp.conf
 
 # Build debian package
-RUN PKG_VER=$(echo "${LLAMA_TAG}" | tr -d "v") && \
+RUN TAG="${LLAMA_TAG:-master}" && \
+    PKG_VER=$(echo "${TAG}" | tr -d "v") && \
     dpkg-deb --build --root-owner-group /staging /dist/llama-server-cuda_${PKG_VER}_amd64.deb
 
 # ==============================================================================
@@ -159,6 +163,7 @@ COPY --from=packager /dist/*.deb /tmp/
 RUN apt-get update && \
     apt-get install -y --no-install-recommends libgomp1 /tmp/*.deb && \
     rm -rf /var/lib/apt/lists/* /tmp/*.deb
+
 
 ENV HOST=0.0.0.0
 ENV PORT=8080
