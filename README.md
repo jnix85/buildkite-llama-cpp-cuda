@@ -32,7 +32,9 @@ buildkite-llama-cpp-cuda/
 ├── Dockerfile                   # Multi-stage BuildKit Dockerfile (builder, packager, export-deb, runtime)
 ├── docker-bake.hcl              # Declarative BuildKit Bake configuration
 ├── .buildkite/
-│   └── pipeline.yml             # Buildkite CI/CD pipeline definition
+│   ├── pipeline.yml             # Buildkite meta pipeline entrypoint
+│   ├── pipeline-build.yml       # Debian package build pipeline
+│   └── pipeline-artifact-upload.yml # Artifact publishing pipeline
 ├── scripts/
 │   ├── build-deb.sh             # Host-native Debian packaging script
 │   └── download-model.sh        # GGUF model download helper for /models/
@@ -107,12 +109,14 @@ docker buildx bake image
 
 In Buildkite:
 1. Connect repository `git@github.com:jnix85/buildkite-llama-cpp-cuda.git`.
-2. The pipeline `.buildkite/pipeline.yml` runs on the hosted queue `linux-medium` (`agents: { queue: "linux-medium" }`) and executes `docker buildx bake deb` and publishes the `.deb` file as a Buildkite artifact.
-3. Schedule nightly builds or configure a webhook trigger to build upon new tags.
+2. The pipeline `.buildkite/pipeline.yml` is the meta entrypoint. It triggers `buildkite-llama-cpp-cuda-build`, which uses `.buildkite/pipeline-build.yml` to build the `.deb`, then triggers `buildkite-llama-cpp-cuda-artifact-upload` to upload and verify the artifact after the build succeeds.
+3. Configure the two downstream pipelines to use `.buildkite/pipeline-build.yml` and `.buildkite/pipeline-artifact-upload.yml`, respectively, and schedule the meta pipeline as needed.
 
-For a dedicated artifact-publishing pipeline, configure a second Buildkite pipeline to use `.buildkite/pipeline-artifact-upload.yml`. It builds and verifies the `.deb`, explicitly uploads it with `buildkite-agent artifact upload`, and confirms it can be downloaded from the resulting Buildkite build. Buildkite artifacts are stored against builds rather than in a separate package repository; consumers can retrieve them with `buildkite-agent artifact download`.
+The artifact pipeline downloads the `.deb` from the successful build pipeline, verifies it, explicitly uploads that same artifact with `buildkite-agent artifact upload`, and confirms it can be downloaded from the resulting Buildkite build. Buildkite artifacts are stored against builds rather than in a separate package repository; consumers can retrieve them with `buildkite-agent artifact download`.
 
-To run both Buildkite pipelines in sequence, configure a third pipeline to use `.buildkite/pipeline-meta.yml`. It synchronously triggers the main build pipeline first, then triggers the artifact-upload pipeline only when the first pipeline succeeds. The default pipeline slugs are `buildkite-llama-cpp-cuda` and `buildkite-llama-cpp-cuda-artifact-upload`; update `BUILD_PIPELINE_SLUG` and `ARTIFACT_PIPELINE_SLUG` in the meta pipeline if the configured slugs differ.
+## Buildkite MCP Server
+
+VS Code is configured to connect to Buildkite's remote MCP server through `.vscode/mcp.json`. Open the MCP server controls in VS Code and authenticate with Buildkite when prompted. The configuration uses OAuth and does not store a Buildkite API token in the repository.
 
 ## GitHub Actions and Packages
 

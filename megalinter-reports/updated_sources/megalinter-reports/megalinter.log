@@ -1,0 +1,344 @@
+----------------------------------------------------------------------------------------------------
+------------------------------------ MegaLinter, by OX Security ------------------------------------
+----------------------------------------------------------------------------------------------------
+ - Image Creation Date: 2026-09-05T13:25:45Z
+ - Image Revision: 9949bad031045f366be2467e00e8371a7328a2e2
+ - Image Version: v10.1.0
+----------------------------------------------------------------------------------------------------
+The MegaLinter documentation can be found at:
+ - https://megalinter.io/10.1.0
+----------------------------------------------------------------------------------------------------
+MegaLinter initialization
+MegaLinter will analyze workspace [/tmp/lint]
+
+[Activation] ANSIBLE_ANSIBLE_LINT has been set inactive, as none of these files has been found: ['.ansible-lint', '.ansible-lint.yml', '.ansible-lint.yaml', '.config/ansible-lint.yml', '.config/ansible-lint.yaml']
+[Activation] CSS_BIOME has been set inactive, as none of these files has been found: ['biome.json', 'biome.jsonc']
+[Activation] EDITORCONFIG_EDITORCONFIG_CHECKER has been set inactive, as none of these files has been found: ['.editorconfig']
+[Activation] GRAPHQL_BIOME has been set inactive, as none of these files has been found: ['biome.json', 'biome.jsonc']
+[Activation] JAVASCRIPT_ES has been set inactive, as none of these files has been found: ['eslint.config.js', 'eslint.config.mjs', 'eslint.config.cjs', 'eslint.config.ts', 'eslint.config.mts', 'eslint.config.cts', '.eslintrc.json', '.eslintrc.yml', '.eslintrc.yaml', '.eslintrc.js', '.eslintrc.cjs', 'package.json:eslintConfig']
+[Activation] JAVASCRIPT_BIOME has been set inactive, as none of these files has been found: ['biome.json', 'biome.jsonc']
+[Activation] JSON_NPM_PACKAGE_JSON_LINT has been set inactive, as none of these files has been found: ['package.json']
+[Activation] JSON_BIOME has been set inactive, as none of these files has been found: ['biome.json', 'biome.jsonc']
+[Activation] JSX_ESLINT has been set inactive, as none of these files has been found: ['eslint.config.js', 'eslint.config.mjs', 'eslint.config.cjs', 'eslint.config.ts', 'eslint.config.mts', 'eslint.config.cts', '.eslintrc.json', '.eslintrc.yml', '.eslintrc.yaml', '.eslintrc.js', '.eslintrc.cjs', 'package.json:eslintConfig']
+[Activation] JSX_BIOME has been set inactive, as none of these files has been found: ['biome.json', 'biome.jsonc']
+[Activation] KUBERNETES_KUBECONFORM has been set inactive, as subdirectory has not been found: kubernetes (set value "any" to always activate)
+[Activation] KUBERNETES_HELM has been set inactive, as none of these files has been found: ['Chart.yml', 'Chart.yaml']
+[Activation] KUBERNETES_KUBESCAPE has been set inactive, as none of these files has been found: ['Chart.yml', 'Chart.yaml']
+[Activation] REPOSITORY_LS_LINT has been set inactive, as none of these files has been found: ['.ls-lint.yml']
+[SemgrepLinter] Deactivated because no ruleset has been defined
+[Activation] SALESFORCE_CODE_ANALYZER_APEX has been set inactive, as subdirectory has not been found: force-app (set value "any" to always activate)
+[Activation] SALESFORCE_CODE_ANALYZER_AURA has been set inactive, as subdirectory has not been found: force-app (set value "any" to always activate)
+[Activation] SALESFORCE_CODE_ANALYZER_LWC has been set inactive, as subdirectory has not been found: force-app (set value "any" to always activate)
+[Activation] SALESFORCE_CODE_ANALYZER_FLOW has been set inactive, as subdirectory has not been found: force-app (set value "any" to always activate)
+[Activation] SPELL_PROSELINT has been set inactive, as none of these files has been found: ['.proselintrc.json', 'proselint/config.json']
+[Activation] SPELL_VALE has been set inactive, as none of these files has been found: ['.vale.ini']
+[Activation] SPELL_CODESPELL has been set inactive, as none of these files has been found: ['.codespellrc']
+[Activation] SQL_SQLFLUFF has been set inactive, as none of these files has been found: ['.sqlfluff']
+[Activation] SWIFT_SWIFTLINT has been set inactive, as none of these files has been found: ['.swiftlint.yml']
+[Activation] TSX_ESLINT has been set inactive, as none of these files has been found: ['eslint.config.js', 'eslint.config.mjs', 'eslint.config.cjs', 'eslint.config.ts', 'eslint.config.mts', 'eslint.config.cts', '.eslintrc.json', '.eslintrc.yml', '.eslintrc.yaml', '.eslintrc.js', '.eslintrc.cjs', 'package.json:eslintConfig']
+[Activation] TSX_BIOME has been set inactive, as none of these files has been found: ['biome.json', 'biome.jsonc']
+[Activation] TYPESCRIPT_ES has been set inactive, as none of these files has been found: ['eslint.config.js', 'eslint.config.mjs', 'eslint.config.cjs', 'eslint.config.ts', 'eslint.config.mts', 'eslint.config.cts', '.eslintrc.json', '.eslintrc.yml', '.eslintrc.yaml', '.eslintrc.js', '.eslintrc.cjs', 'package.json:eslintConfig']
+[Activation] TYPESCRIPT_BIOME has been set inactive, as none of these files has been found: ['biome.json', 'biome.jsonc']
+ANSIBLE_ANSIBLE_LINT has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+COFFEE_COFFEELINT has been disabled in MegaLinter for the following reason: CoffeeScript tooling is discontinued, and coffeelint can not honor EXCLUDED_DIRECTORIES (it has no exclusion option and only reads .coffeelintignore from its working directory). The linter will be removed in a future version
+COPYPASTE_JSCPD has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+CSHARP_DOTNET_FORMAT has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+GO_GOLANGCI_LINT has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+GRAPHQL_GRAPHQL_SCHEMA_LINTER has been disabled in MegaLinter for the following reason: graphql-schema-linter is unmaintained (no release or commit since May 2022) and its peer dependency range pins graphql to ^15 || ^16, which blocks the whole GraphQL npm install from moving to graphql v17. Use GRAPHQL_BIOME to lint GraphQL files. The linter will be removed in a future version
+JSON_NPM_PACKAGE_JSON_LINT has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+KOTLIN_DETEKT has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+KUBERNETES_HELM has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+KUBERNETES_KUBESCAPE has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+PHP_PHPCSFIXER has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+REPOSITORY_CHECKOV has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+REPOSITORY_DEVSKIM has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+REPOSITORY_DUSTILOCK has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+REPOSITORY_GIT_DIFF has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+REPOSITORY_BETTERLEAKS has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+REPOSITORY_GRYPE has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+REPOSITORY_LS_LINT has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+REPOSITORY_OSV_SCANNER has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+REPOSITORY_SECRETLINT has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+REPOSITORY_SEMGREP has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+REPOSITORY_SYFT has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+REPOSITORY_TRIVY has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+REPOSITORY_TRIVY_SBOM has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+REPOSITORY_TRUFFLEHOG has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+REPOSITORY_KINGFISHER has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+RUST_CLIPPY has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+SALESFORCE_CODE_ANALYZER_APEX has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+SALESFORCE_CODE_ANALYZER_APEXGURU has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+SALESFORCE_CODE_ANALYZER_AURA has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+SALESFORCE_CODE_ANALYZER_LWC has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+SALESFORCE_CODE_ANALYZER_FLOW has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+SWIFT_SWIFTLINT has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+TERRAFORM_TFLINT has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+VBDOTNET_DOTNET_FORMAT has been skipped because its CLI lint mode project is in SKIP_CLI_LINT_MODES variable.
+Skipped linters: ANSIBLE_ANSIBLE_LINT, COFFEE_COFFEELINT, COPYPASTE_JSCPD, CSHARP_DOTNET_FORMAT, CSS_BIOME, EDITORCONFIG_EDITORCONFIG_CHECKER, GO_GOLANGCI_LINT, GRAPHQL_BIOME, GRAPHQL_GRAPHQL_SCHEMA_LINTER, JAVASCRIPT_BIOME, JAVASCRIPT_ES, JAVASCRIPT_PRETTIER, JSON_BIOME, JSON_NPM_PACKAGE_JSON_LINT, JSX_BIOME, JSX_ESLINT, KOTLIN_DETEKT, KUBERNETES_HELM, KUBERNETES_KUBECONFORM, KUBERNETES_KUBESCAPE, MARKDOWN_RUMDL, PHP_PHPCSFIXER, PYTHON_RUFF_FORMAT, REPOSITORY_BETTERLEAKS, REPOSITORY_CHECKOV, REPOSITORY_DEVSKIM, REPOSITORY_DUSTILOCK, REPOSITORY_GIT_DIFF, REPOSITORY_GRYPE, REPOSITORY_KINGFISHER, REPOSITORY_LS_LINT, REPOSITORY_OSV_SCANNER, REPOSITORY_SECRETLINT, REPOSITORY_SEMGREP, REPOSITORY_SYFT, REPOSITORY_TRIVY, REPOSITORY_TRIVY_SBOM, REPOSITORY_TRUFFLEHOG, RUST_CLIPPY, SALESFORCE_CODE_ANALYZER_APEX, SALESFORCE_CODE_ANALYZER_APEXGURU, SALESFORCE_CODE_ANALYZER_AURA, SALESFORCE_CODE_ANALYZER_FLOW, SALESFORCE_CODE_ANALYZER_LWC, SPELL_CODESPELL, SPELL_PROSELINT, SPELL_VALE, SQL_SQLFLUFF, SWIFT_SWIFTLINT, TERRAFORM_TFLINT, TSX_BIOME, TSX_ESLINT, TYPESCRIPT_BIOME, TYPESCRIPT_ES, TYPESCRIPT_PRETTIER, VBDOTNET_DOTNET_FORMAT
+Some linters were skipped due to activation rules:
+- JAVASCRIPT_PRETTIER: JAVASCRIPT_DEFAULT_STYLE=standard (set JAVASCRIPT_DEFAULT_STYLE=prettier to activate)
+- MARKDOWN_RUMDL: MARKDOWN_DEFAULT_STYLE=markdownlint (set MARKDOWN_DEFAULT_STYLE=rumdl to activate)
+- PYTHON_RUFF_FORMAT: PYTHON_DEFAULT_STYLE=black (set PYTHON_DEFAULT_STYLE=ruff to activate)
+- SALESFORCE_CODE_ANALYZER_APEXGURU: SFDX_AUTH_URL is not set (define SFDX_AUTH_URL to activate)
+- TYPESCRIPT_PRETTIER: TYPESCRIPT_DEFAULT_STYLE=standard (set TYPESCRIPT_DEFAULT_STYLE=prettier to activate)
+To receive reports as email, please set variable EMAIL_REPORTER_EMAIL
+[ApiReporter] Not enabled as API_REPORTER is not defined to true
+
+MegaLinter now collects the files to analyse
+- File extensions: , .R, .RMD, .Rmd, .bash, .bicep, .c, .c++, .cc, .cdxml, .clj, .cljc, .cljs, .config, .cpp, .cs, .csproj, .css, .cu, .cuh, .cxx, .dart, .dash, .edn, .env, .feature, .go, .gradle, .groovy, .gvy, .h, .h++, .hcl, .hh, .hpp, .htm, .html, .hxx, .ipynb, .java, .js, .json, .json5, .jsonc, .ksh, .kt, .kts, .lua, .markdown, .md, .mdx, .nf, .p6, .php, .pl, .pl6, .pm, .pm6, .props, .proto, .ps1, .ps1xml, .psd1, .psm1, .psrc, .pssc, .pxd, .py, .pyi, .pyx, .r, .raku, .rakumod, .rakutest, .rb, .resource, .robot, .rst, .saas, .scala, .scss, .sh, .smk, .t, .targets, .tex, .tf, .tofu, .ts, .txt, .xml, .xsd, .yaml, .yml
+- File names (regex): (.*\.)?Dockerfile, Containerfile, Jenkinsfile, Snakefile
+Kept [13] files on [28] found files
+
++----MATCHING LINTERS-------------------+------------------------------------------------------------------------+----------------+------------+
+| Descriptor | Linter                   | Criteria                                                               | Matching files | Format/Fix |
++------------+--------------------------+------------------------------------------------------------------------+----------------+------------+
+| JSON       | jsonlint                 | .json                                                                  | 6              | no         |
+| JSON       | v8r                      | .json                                                                  | 6              | no         |
+| JSON       | prettier                 | .json                                                                  | 6              | no         |
+| MARKDOWN   | markdownlint             | .md                                                                    | 1              | no         |
+| MARKDOWN   | markdown-table-formatter | .md                                                                    | 1              | no         |
+| SPELL      | cspell                   |                                                                        | 13             | no         |
+| SPELL      | lychee                   | .md|.mdx|.markdown|.html|.htm|.rst|.txt|.json|.jsonc|.json5|.yaml|.yml | 12             | no         |
+| XML        | xmllint                  | .xml|.xsd                                                              | 1              | no         |
+| YAML       | prettier                 | .yml|.yaml                                                             | 4              | no         |
+| YAML       | yamllint                 | .yml|.yaml                                                             | 4              | no         |
+| YAML       | v8r                      | .yml|.yaml                                                             | 4              | no         |
++------------+--------------------------+------------------------------------------------------------------------+----------------+------------+
+
+Processing linters on [10] parallel cores… (can be decreased with variable PARALLEL_PROCESS_NUMBER in case of performance issues)
+Unable to get number of errors with regex_count and \[error\]
+[32m✅ Linted [JSON] files with [jsonlint] successfully - (2.27s)[0m
+- Using [jsonlint v17.0.1] https://megalinter.io/10.1.0/descriptors/json_jsonlint
+- MegaLinter key: [JSON_JSONLINT]
+- Rules config: identified by [jsonlint]
+- Number of files analyzed: [6]
+- CWD: [/tmp/lint]
+- Command: [jsonlint --quiet .comp/config.json .comp/session-memory/unknown.json .vscode/mcp.json megalinter-reports/.cspell.json megalinter-reports/IDE-config/.markdownlint.json megalinter-reports/IDE-config/.vscode/extensions.json]
+
+[33m⚠️ Linted [JSON] files with [prettier]: Found 1 non blocking error(s) and 0 non blocking warning(s) - (2.6s)[0m
+- Using [prettier v3.9.6] https://megalinter.io/10.1.0/descriptors/json_prettier
+- MegaLinter key: [JSON_PRETTIER]
+- Rules config: identified by [prettier]
+- Number of files analyzed: [6]
+- CWD: [/tmp/lint]
+- Command: [prettier --check .comp/config.json .comp/session-memory/unknown.json .vscode/mcp.json megalinter-reports/.cspell.json megalinter-reports/IDE-config/.markdownlint.json megalinter-reports/IDE-config/.vscode/extensions.json]
+--Error detail:
+Checking formatting...
+[[33mwarn[39m] .comp/session-memory/unknown.json
+[[33mwarn[39m] megalinter-reports/.cspell.json
+[[33mwarn[39m] megalinter-reports/IDE-config/.vscode/extensions.json
+[[33mwarn[39m] Code style issues found in 3 files. Run Prettier with --write to fix.
+
+
+[32m✅ Linted [JSON] files with [v8r] successfully - (6.46s)[0m
+- Using [v8r v6.1.0] https://megalinter.io/10.1.0/descriptors/json_v8r
+- MegaLinter key: [JSON_V8R]
+- Rules config: identified by [v8r]
+- Number of files analyzed: [6]
+- CWD: [/tmp/lint]
+- Command: [v8r --ignore-errors .comp/config.json .comp/session-memory/unknown.json .vscode/mcp.json megalinter-reports/.cspell.json megalinter-reports/IDE-config/.markdownlint.json megalinter-reports/IDE-config/.vscode/extensions.json]
+
+[33m⚠️ Linted [MARKDOWN] files with [markdownlint]: Found 1 non blocking error(s) and 0 non blocking warning(s) - (2.82s)[0m
+- Using [markdownlint v0.49.1] https://megalinter.io/10.1.0/descriptors/markdown_markdownlint
+- MegaLinter key: [MARKDOWN_MARKDOWNLINT]
+- Rules config: [.markdownlint.json]
+- Number of files analyzed: [1]
+- CWD: [/tmp/lint]
+- Command: [markdownlint -c /action/lib/.automation/.markdownlint.json README.md]
+--Error detail:
+README.md:30 error MD040/fenced-code-language Fenced code blocks should have a language specified [Context: "```"]
+
+
+[32m✅ Linted [MARKDOWN] files with [markdown-table-formatter] successfully - (1.97s)[0m
+- Using [markdown-table-formatter v1.7.0] https://megalinter.io/10.1.0/descriptors/markdown_markdown_table_formatter
+- MegaLinter key: [MARKDOWN_MARKDOWN_TABLE_FORMATTER]
+- Rules config: identified by [markdown-table-formatter]
+- Number of files analyzed: [1]
+- CWD: [/tmp/lint]
+- Command: [markdown-table-formatter --check README.md]
+
+[31m❌ Linted [SPELL] files with [cspell]: Found 48 error(s) and 0 warning(s) - (7.02s)[0m
+- Using [cspell v10.1.1] https://megalinter.io/10.1.0/descriptors/spell_cspell
+- MegaLinter key: [SPELL_CSPELL]
+- Rules config: identified by [cspell]
+- Number of files analyzed: [14]
+- CWD: [/tmp/lint]
+- Command: [cspell --show-context --show-suggestions --no-must-find-files .buildkite/pipeline-artifact-upload.yml .buildkite/pipeline-build.yml .buildkite/pipeline.yml .comp/config.json .comp/session-memory/unknown.json .vscode/mcp.json README.md megalinter-repo...(truncated)]
+--Error detail:
+.buildkite/pipeline-artifact-upload.yml:10:10     - Unknown word (BUILDKIT)   -- DOCKER_BUILDKIT: "1"
+	 Suggestions: [BUILDKITD, BUILDKITE, Buildkite, BUILDDIR, BUILD]
+.buildkite/pipeline-artifact-upload.yml:24:10     - Unknown word (dpkg)       -- - "dpkg -c dist/*.deb"
+	 Suggestions: [gpkg, GPKG, pkg, daks, dang]
+.buildkite/pipeline-artifact-upload.yml:25:10     - Unknown word (dpkg)       -- - "dpkg -I dist/*.deb"
+	 Suggestions: [gpkg, GPKG, pkg, daks, dang]
+.buildkite/pipeline-artifact-upload.yml:42:10     - Unknown word (dpkg)       -- - "dpkg-deb --info dist/*.deb
+	 Suggestions: [gpkg, GPKG, pkg, daks, dang]
+.buildkite/pipeline-build.yml:2:42      - Unknown word (CUDA)       -- Build llama-server CUDA Debian Package"
+	 Suggestions: [CODA, CUBA, CUDS, c-uda, C-UDA]
+.buildkite/pipeline-build.yml:6:36      - Unknown word (Buildx)     -- --- Checking Docker Buildx & BuildKit availability
+	 Suggestions: [Build, Builds, Built, Build's, Builded]
+.buildkite/pipeline-build.yml:7:17      - Unknown word (buildx)     -- - "docker buildx version"
+	 Suggestions: [build, builds, built, build's, builded]
+.buildkite/pipeline-build.yml:11:34     - Unknown word (buildx)     -- LLAMA_TAG=${TAG} docker buildx bake deb"
+	 Suggestions: [build, builds, built, build's, builded]
+.buildkite/pipeline-build.yml:16:14     - Unknown word (BUILDKIT)   -- DOCKER_BUILDKIT: "1"
+	 Suggestions: [BUILDKITD, BUILDKITE, Buildkite, BUILDDIR, BUILD]
+.buildkite/pipeline-build.yml:27:10     - Unknown word (dpkg)       -- - "dpkg -c dist/*.deb"
+	 Suggestions: [gpkg, GPKG, pkg, daks, dang]
+.buildkite/pipeline-build.yml:28:10     - Unknown word (dpkg)       -- - "dpkg -I dist/*.deb"
+	 Suggestions: [gpkg, GPKG, pkg, daks, dang]
+.buildkite/pipeline.yml:5:45      - Unknown word (cuda)       -- buildkite-llama-cpp-cuda-build"
+	 Suggestions: [coda, cuba, cuds, c-uda, cauda]
+.buildkite/pipeline.yml:6:48      - Unknown word (cuda)       -- buildkite-llama-cpp-cuda-artifact-upload"
+	 Suggestions: [coda, cuba, cuds, c-uda, cauda]
+.comp/session-memory/unknown.json:18:34     - Unknown word (cuda)       -- buildkite-llama-cpp-cuda"
+	 Suggestions: [coda, cuba, cuds, c-uda, cauda]
+megalinter-reports/IDE-config.txt:15:7      - Unknown word (apheleia)   -- - apheleia: https://github.com
+	 Suggestions: [aphelia, aphelian, amelia, apulia, aphagia]
+megalinter-reports/IDE-config.txt:33:7      - Unknown word (vison)      -- - vison: https://github.com
+	 Suggestions: [visor, vinson, vision, Vinson, bison]
+megalinter-reports/IDE-config.txt:57:7      - Unknown word (apheleia)   -- - apheleia: https://github.com
+	 Suggestions: [aphelia, aphelian, amelia, apulia, aphagia]
+megalinter-reports/IDE-config.txt:75:7      - Unknown word (vison)      -- - vison: https://github.com
+	 Suggestions: [visor, vinson, vision, Vinson, bison]
+megalinter-reports/IDE-config.txt:81:7      - Unknown word (flycheck)   -- - flycheck: https://github.com
+	 Suggestions: [flyspeck, fleck, fleche, fleches, flyback]
+README.md:1:23      - Unknown word (cuda)       -- buildkite-llama-cpp-cuda
+	 Suggestions: [coda, cuba, cuds, c-uda, cauda]
+README.md:3:101     - Unknown word (CUDA)       -- packaging, and deploying CUDA-accelerated `llama.cpp
+	 Suggestions: [CODA, CUBA, CUDS, c-uda, C-UDA]
+README.md:5:17      - Unknown word (Sigrun)     -- Optimized for **Sigrun** (Intel Core i9-99
+	 Suggestions: [sigurd, Sigurd, Airgun, Sign, Siren]
+README.md:12:39     - Unknown word (CUDA)       -- llama.cpp` using NVIDIA CUDA 12 development images
+	 Suggestions: [CODA, CUBA, CUDS, c-uda, C-UDA]
+README.md:13:60     - Unknown word (DCMAKE)     -- Compute Capability 7.5 (`-DCMAKE_CUDA_ARCHITECTURES=
+	 Suggestions: [CMAKE, CCMAKE, DRAKE, DAMAGE, Drake]
+README.md:13:67     - Unknown word (CUDA)       -- Capability 7.5 (`-DCMAKE_CUDA_ARCHITECTURES=75`).
+	 Suggestions: [CODA, CUBA, CUDS, c-uda, C-UDA]
+README.md:14:54     - Unknown word (libggml)    -- modular shared libraries (`libggml-cuda.so`, `libllama
+	 Suggestions: [libxml, libgtk, libel, libssl, lingam]
+README.md:14:62     - Unknown word (cuda)       -- libraries (`libggml-cuda.so`, `libllama.so`,
+	 Suggestions: [coda, cuba, cuds, c-uda, cauda]
+README.md:14:73     - Unknown word (libllama)   -- `libggml-cuda.so`, `libllama.so`, `libllama-server
+	 Suggestions: [liblzma, libata, libava, liliana, libelant]
+README.md:14:88     - Unknown word (libllama)   -- so`, `libllama.so`, `libllama-server-impl.so`) into
+	 Suggestions: [liblzma, libata, libava, liliana, libelant]
+README.md:17:28     - Unknown word (buildx)     -- Single command `docker buildx bake deb` to compile
+	 Suggestions: [build, builds, built, build's, builded]
+README.md:24:107    - Unknown word (conffile)   -- default/llama-server` (conffile).
+	 Suggestions: [confide, confine, coffle, cheffile, codefile]
+README.md:31:21     - Unknown word (cuda)       -- buildkite-llama-cpp-cuda/
+	 Suggestions: [coda, cuba, cuds, c-uda, cauda]
+README.md:40:36     - Unknown word (GGUF)       -- download-model.sh # GGUF model download helper
+	 Suggestions: [GIFU, Gifu, GUFF, GULF, Gulf]
+README.md:55:8      - Unknown word (buildx)     -- docker buildx bake deb
+	 Suggestions: [build, builds, built, build's, builded]
+README.md:58:24     - Unknown word (buildx)     -- LLAMA_TAG=b4800 docker buildx bake deb
+	 Suggestions: [build, builds, built, build's, builded]
+README.md:63:78     - Unknown word (cuda)       -- ./dist/llama-server-cuda_<tag>_amd64.deb`.
+	 Suggestions: [coda, cuba, cuds, c-uda, cauda]
+README.md:65:31     - Unknown word (Sigrun)     -- Install the Package on Sigrun
+	 Suggestions: [sigurd, Sigurd, Airgun, Sign, Siren]
+README.md:67:41     - Unknown word (cuda)       -- ./dist/llama-server-cuda_*.deb
+	 Suggestions: [coda, cuba, cuds, c-uda, cauda]
+README.md:78:29     - Unknown word (GGUF)       -- Download or place your GGUF model** in `/models
+	 Suggestions: [GIFU, Gifu, GUFF, GULF, Gulf]
+README.md:80:29     - Unknown word (Qwen)       -- Helper script to download Qwen3.8-27B-Uncensored (
+	 Suggestions: [gwen, Gwen, owen, Owen, Wen]
+README.md:83:32     - Unknown word (Coletti)    -- specify `HF_REPO="JonathanColetti/Qwen3.8-27B-Uncensored
+	 Suggestions: [colette, Colette, colet, Colet, Colet's]
+README.md:83:40     - Unknown word (Qwen)       -- REPO="JonathanColetti/Qwen3.8-27B-Uncensored-GGUF
+	 Suggestions: [gwen, Gwen, owen, Owen, Wen]
+README.md:83:63     - Unknown word (GGUF)       -- Qwen3.8-27B-Uncensored-GGUF:Q4_K_M"` in `/etc/default
+	 Suggestions: [GIFU, Gifu, GUFF, GULF, Gulf]
+README.md:98:1      - Unknown word (journalctl) -- journalctl -u llama-server -f
+	 Suggestions: [journal, journald, journals, journal's, journalese]
+README.md:103:8     - Unknown word (buildx)     -- docker buildx bake image
+	 Suggestions: [build, builds, built, build's, builded]
+README.md:111:39    - Unknown word (jnix)       -- repository `git@github.com:jnix85/buildkite-llama-cpp
+	 Suggestions: [jinx, unix, Unix, UNIX, nix]
+README.md:125:42    - Unknown word (buildx)     -- package with `docker buildx bake deb`.
+	 Suggestions: [build, builds, built, build's, builded]
+README.md:127:45    - Unknown word (dpkg)       -- inspects the artifact with `dpkg`.
+	 Suggestions: [gpkg, GPKG, pkg, daks, dang]
+CSpell: Files checked: 13, skipped: 1, Issues found: 48 in 6 files.
+
+
+[31m❌ Linted [SPELL] files with [lychee]: Found 1 error(s) and 0 warning(s) - (2.75s)[0m
+- Using [lychee v0.24.2] https://megalinter.io/10.1.0/descriptors/spell_lychee
+- MegaLinter key: [SPELL_LYCHEE]
+- Rules config: identified by [lychee]
+- Number of files analyzed: [12]
+- CWD: [/tmp/lint]
+- Command: [lychee --format detailed --no-progress .buildkite/pipeline-artifact-upload.yml .buildkite/pipeline-build.yml .buildkite/pipeline.yml .comp/config.json .comp/session-memory/unknown.json .vscode/mcp.json README.md megalinter-reports/.cspell.json megali...(truncated)]
+--Error detail:
+📝 Summary
+---------------------
+🔍 Total...........33
+🔗 Unique..........21
+✅ Successful......32
+⏳ Timeouts.........0
+🔀 Redirected.......4
+👻 Excluded.........0
+❓ Unknown..........0
+🚫 Errors...........1
+⛔ Unsupported......1
+
+Errors in .vscode/mcp.json
+[401] https://mcp.buildkite.com/mcp (at 5:15) | Rejected status code: 401 Unauthorized
+
+Hint: Followed 4 redirects. You might want to consider replacing redirecting URLs with the resolved URLs. Use verbose mode (`-v`/`-vv`) to see redirection details.
+Hint: You can configure accepted/rejected response codes with `-a` or `--accept`
+
+
+[32m✅ Linted [XML] files with [xmllint] successfully - (0.76s)[0m
+- Using [xmllint v21309] https://megalinter.io/10.1.0/descriptors/xml_xmllint
+- MegaLinter key: [XML_XMLLINT]
+- Rules config: identified by [xmllint]
+- Number of files analyzed: [1]
+- CWD: [/tmp/lint]
+- Command: [xmllint megalinter-reports/IDE-config/.idea/externalDependencies.xml]
+
+[33m⚠️ Linted [YAML] files with [prettier]: Found 1 non blocking error(s) and 3 non blocking warning(s) - (2.52s)[0m
+- Using [prettier v3.9.6] https://megalinter.io/10.1.0/descriptors/yaml_prettier
+- MegaLinter key: [YAML_PRETTIER]
+- Rules config: identified by [prettier]
+- Number of files analyzed: [4]
+- CWD: [/tmp/lint]
+- Command: [prettier --check .buildkite/pipeline-artifact-upload.yml .buildkite/pipeline-build.yml .buildkite/pipeline.yml megalinter-reports/IDE-config/.yamllint.yml]
+--Error detail:
+Checking formatting...
+[[33mwarn[39m] .buildkite/pipeline-artifact-upload.yml
+[[33mwarn[39m] .buildkite/pipeline-build.yml
+[[33mwarn[39m] Code style issues found in 2 files. Run Prettier with --write to fix.
+
+
+[32m✅ Linted [YAML] files with [v8r] successfully - (5.65s)[0m
+- Using [v8r v6.1.0] https://megalinter.io/10.1.0/descriptors/yaml_v8r
+- MegaLinter key: [YAML_V8R]
+- Rules config: identified by [v8r]
+- Number of files analyzed: [4]
+- CWD: [/tmp/lint]
+- Command: [v8r --ignore-errors .buildkite/pipeline-artifact-upload.yml .buildkite/pipeline-build.yml .buildkite/pipeline.yml megalinter-reports/IDE-config/.yamllint.yml]
+
+[31m❌ Linted [YAML] files with [yamllint]: Found 5 error(s) and 0 warning(s) - (1.36s)[0m
+- Using [yamllint v1.38.0] https://megalinter.io/10.1.0/descriptors/yaml_yamllint
+- MegaLinter key: [YAML_YAMLLINT]
+- Rules config: [.yamllint.yml]
+- Number of files analyzed: [4]
+- CWD: [/tmp/lint]
+- Command: [yamllint --format standard -c /action/lib/.automation/.yamllint.yml .buildkite/pipeline-artifact-upload.yml .buildkite/pipeline-build.yml .buildkite/pipeline.yml megalinter-reports/IDE-config/.yamllint.yml]
+--Error detail:
+.buildkite/pipeline-artifact-upload.yml
+  9:1       warning  missing document start "---"  (document-start)
+  42:37     error    no new line character at the end of file  (new-line-at-end-of-file)
+
+.buildkite/pipeline-build.yml
+  1:1       warning  missing document start "---"  (document-start)
+  28:29     error    no new line character at the end of file  (new-line-at-end-of-file)
+
+.buildkite/pipeline.yml
+  4:1       warning  missing document start "---"  (document-start)
+
+
+

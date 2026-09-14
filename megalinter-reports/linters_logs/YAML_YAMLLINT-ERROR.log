@@ -1,0 +1,18 @@
+Results of yamllint linter (version 1.38.0)
+See documentation on https://megalinter.io/10.1.0/descriptors/yaml_yamllint/
+-----------------------------------------------
+
+❌ [ERROR] for workspace /tmp/lint
+Linter raw log:
+.buildkite/pipeline-artifact-upload.yml
+  9:1       warning  missing document start "---"  (document-start)
+  42:37     error    no new line character at the end of file  (new-line-at-end-of-file)
+
+.buildkite/pipeline-build.yml
+  1:1       warning  missing document start "---"  (document-start)
+  28:29     error    no new line character at the end of file  (new-line-at-end-of-file)
+
+.buildkite/pipeline.yml
+  4:1       warning  missing document start "---"  (document-start)
+
+

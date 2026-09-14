@@ -1,28 +1,34 @@
+# The connected Buildkite pipeline uses this file as its meta pipeline.
+# It builds first, then publishes the artifact only after that build succeeds.
+
+env:
+  BUILD_PIPELINE_SLUG: "buildkite-llama-cpp-cuda-build"
+  ARTIFACT_PIPELINE_SLUG: "buildkite-llama-cpp-cuda-artifact-upload"
+
 steps:
-  - label: ":package: Build llama-server CUDA Debian Package"
-    agents:
-      queue: "linux-medium"
-    command:
-      - "echo '--- Checking Docker Buildx & BuildKit availability'"
-      - "docker buildx version"
-      - "mkdir -p dist"
-      - "TAG=${LLAMA_TAG:-master}"
-      - "echo \"--- Building llama.cpp tag: ${TAG} for Turing (CC 7.5)\""
-      - "LLAMA_TAG=${TAG} docker buildx bake deb"
-      - "ls -la dist/"
-    artifact_paths:
-      - "dist/*.deb"
-    env:
-      DOCKER_BUILDKIT: "1"
+  - label: ":hammer_and_wrench: Build package pipeline"
+    key: "build-package"
+    trigger: "${BUILD_PIPELINE_SLUG}"
+    async: false
+    build:
+      message: "${BUILDKITE_MESSAGE}"
+      commit: "${BUILDKITE_COMMIT}"
+      branch: "${BUILDKITE_BRANCH}"
+      env:
+        LLAMA_TAG: "${LLAMA_TAG}"
+      meta_data:
+        triggered_by_pipeline: "${BUILDKITE_PIPELINE_SLUG}"
 
-  - wait
-
-  - label: ":white_check_mark: Verify Package Artifacts"
-    agents:
-      queue: "linux-medium"
-    command:
-      - "echo '--- Downloading artifacts'"
-      - "buildkite-agent artifact download 'dist/*.deb' . || true"
-      - "echo '--- Inspecting Debian Package contents'"
-      - "dpkg -c dist/*.deb"
-      - "dpkg -I dist/*.deb"
+  - label: ":package: Publish artifact pipeline"
+    key: "publish-artifact"
+    depends_on: "build-package"
+    trigger: "${ARTIFACT_PIPELINE_SLUG}"
+    async: false
+    build:
+      message: "${BUILDKITE_MESSAGE}"
+      commit: "${BUILDKITE_COMMIT}"
+      branch: "${BUILDKITE_BRANCH}"
+      env:
+        LLAMA_TAG: "${LLAMA_TAG}"
+      meta_data:
+        triggered_by_pipeline: "${BUILDKITE_PIPELINE_SLUG}"

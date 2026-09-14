@@ -1,0 +1,24 @@
+Results of lychee linter (version 0.24.2)
+See documentation on https://megalinter.io/10.1.0/descriptors/spell_lychee/
+-----------------------------------------------
+
+❌ [ERROR] for workspace /tmp/lint
+Linter raw log:
+📝 Summary
+---------------------
+🔍 Total...........33
+🔗 Unique..........21
+✅ Successful......32
+⏳ Timeouts.........0
+🔀 Redirected.......4
+👻 Excluded.........0
+❓ Unknown..........0
+🚫 Errors...........1
+⛔ Unsupported......1
+
+Errors in .vscode/mcp.json
+[401] https://mcp.buildkite.com/mcp (at 5:15) | Rejected status code: 401 Unauthorized
+
+Hint: Followed 4 redirects. You might want to consider replacing redirecting URLs with the resolved URLs. Use verbose mode (`-v`/`-vv`) to see redirection details.
+Hint: You can configure accepted/rejected response codes with `-a` or `--accept`
+

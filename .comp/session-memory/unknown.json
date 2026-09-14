@@ -1,0 +1,31 @@
+{
+  "sessions": [
+    {
+      "id": "1789348130870",
+      "timestamp": 1789348342637,
+      "calls": [
+        {
+          "query": "review build and packaging scripts",
+          "outcome": null,
+          "symbols": [
+            "1. Build Latest Debian Package Locally with BuildKit",
+            "3. Configure and Start the llama-server Service",
+            "4. Build Standalone Docker Runtime Image",
+            "Build package from latest master:",
+            "GitHub Actions and Packages",
+            "Or build a specific release tag (e.g., b4800):",
+            "Or build on host from local binaries:",
+            "buildkite-llama-cpp-cuda"
+          ],
+          "files": [
+            "README.md"
+          ],
+          "tokens": 0,
+          "stale": false,
+          "timestamp": 1789348342637,
+          "agent": "unknown"
+        }
+      ]
+    }
+  ]
+}

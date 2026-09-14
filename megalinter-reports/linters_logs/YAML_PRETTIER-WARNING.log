@@ -1,0 +1,11 @@
+Results of prettier linter (version 3.9.6)
+See documentation on https://megalinter.io/10.1.0/descriptors/yaml_prettier/
+-----------------------------------------------
+
+❌ [ERROR] for workspace /tmp/lint
+Linter raw log:
+Checking formatting...
+[warn] .buildkite/pipeline-artifact-upload.yml
+[warn] .buildkite/pipeline-build.yml
+[warn] Code style issues found in 2 files. Run Prettier with --write to fix.
+

@@ -10,17 +10,15 @@ env:
   DOCKER_BUILDKIT: "1"
 
 steps:
-  - label: ":package: Build and upload llama-server Debian package"
+  - label: ":package: Upload llama-server Debian package"
     key: "publish-deb"
     agents:
       queue: "linux-medium"
     command:
-      - "echo '--- Checking Docker Buildx & BuildKit availability'"
-      - "docker buildx version"
-      - "mkdir -p dist"
-      - "TAG=${LLAMA_TAG:-master}"
-      - "echo \"--- Building llama.cpp tag: ${TAG} for Turing (CC 7.5)\""
-      - "LLAMA_TAG=${TAG} docker buildx bake deb"
+      - "echo '--- Downloading artifact from successful build pipeline'"
+      - "test -n \"${BUILDKITE_TRIGGERED_FROM_BUILD_NUMBER:-}\""
+      - "test -n \"${BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG:-}\""
+      - "buildkite-agent artifact download 'dist/*.deb' . --build \"${BUILDKITE_TRIGGERED_FROM_BUILD_NUMBER}\" --pipeline \"${BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG}\""
       - "ls -la dist/"
       - "echo '--- Inspecting Debian package'"
       - "dpkg -c dist/*.deb"
@@ -32,9 +30,6 @@ steps:
       automatic:
         - exit_status: -1
           limit: 2
-    # Publish only release branches/tags by default. Remove or customize this
-    # condition when configuring the dedicated Buildkite pipeline.
-    if: "build.branch == \"main\" || build.tag != null"
 
   - wait
 

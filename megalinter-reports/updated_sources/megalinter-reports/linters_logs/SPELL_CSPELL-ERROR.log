@@ -1,0 +1,145 @@
+Results of cspell linter (version 10.1.1)
+See documentation on https://megalinter.io/10.1.0/descriptors/spell_cspell/
+-----------------------------------------------
+
+❌ [ERROR] for workspace /tmp/lint
+Linter raw log:
+.buildkite/pipeline-artifact-upload.yml:10:10     - Unknown word (BUILDKIT)   -- DOCKER_BUILDKIT: "1"
+	 Suggestions: [BUILDKITD, BUILDKITE, Buildkite, BUILDDIR, BUILD]
+.buildkite/pipeline-artifact-upload.yml:24:10     - Unknown word (dpkg)       -- - "dpkg -c dist/*.deb"
+	 Suggestions: [gpkg, GPKG, pkg, daks, dang]
+.buildkite/pipeline-artifact-upload.yml:25:10     - Unknown word (dpkg)       -- - "dpkg -I dist/*.deb"
+	 Suggestions: [gpkg, GPKG, pkg, daks, dang]
+.buildkite/pipeline-artifact-upload.yml:42:10     - Unknown word (dpkg)       -- - "dpkg-deb --info dist/*.deb
+	 Suggestions: [gpkg, GPKG, pkg, daks, dang]
+.buildkite/pipeline-build.yml:2:42      - Unknown word (CUDA)       -- Build llama-server CUDA Debian Package"
+	 Suggestions: [CODA, CUBA, CUDS, c-uda, C-UDA]
+.buildkite/pipeline-build.yml:6:36      - Unknown word (Buildx)     -- --- Checking Docker Buildx & BuildKit availability
+	 Suggestions: [Build, Builds, Built, Build's, Builded]
+.buildkite/pipeline-build.yml:7:17      - Unknown word (buildx)     -- - "docker buildx version"
+	 Suggestions: [build, builds, built, build's, builded]
+.buildkite/pipeline-build.yml:11:34     - Unknown word (buildx)     -- LLAMA_TAG=${TAG} docker buildx bake deb"
+	 Suggestions: [build, builds, built, build's, builded]
+.buildkite/pipeline-build.yml:16:14     - Unknown word (BUILDKIT)   -- DOCKER_BUILDKIT: "1"
+	 Suggestions: [BUILDKITD, BUILDKITE, Buildkite, BUILDDIR, BUILD]
+.buildkite/pipeline-build.yml:27:10     - Unknown word (dpkg)       -- - "dpkg -c dist/*.deb"
+	 Suggestions: [gpkg, GPKG, pkg, daks, dang]
+.buildkite/pipeline-build.yml:28:10     - Unknown word (dpkg)       -- - "dpkg -I dist/*.deb"
+	 Suggestions: [gpkg, GPKG, pkg, daks, dang]
+.buildkite/pipeline.yml:5:45      - Unknown word (cuda)       -- buildkite-llama-cpp-cuda-build"
+	 Suggestions: [coda, cuba, cuds, c-uda, cauda]
+.buildkite/pipeline.yml:6:48      - Unknown word (cuda)       -- buildkite-llama-cpp-cuda-artifact-upload"
+	 Suggestions: [coda, cuba, cuds, c-uda, cauda]
+.comp/session-memory/unknown.json:18:34     - Unknown word (cuda)       -- buildkite-llama-cpp-cuda"
+	 Suggestions: [coda, cuba, cuds, c-uda, cauda]
+megalinter-reports/IDE-config.txt:15:7      - Unknown word (apheleia)   -- - apheleia: https://github.com
+	 Suggestions: [aphelia, aphelian, amelia, apulia, aphagia]
+megalinter-reports/IDE-config.txt:33:7      - Unknown word (vison)      -- - vison: https://github.com
+	 Suggestions: [visor, vinson, vision, Vinson, bison]
+megalinter-reports/IDE-config.txt:57:7      - Unknown word (apheleia)   -- - apheleia: https://github.com
+	 Suggestions: [aphelia, aphelian, amelia, apulia, aphagia]
+megalinter-reports/IDE-config.txt:75:7      - Unknown word (vison)      -- - vison: https://github.com
+	 Suggestions: [visor, vinson, vision, Vinson, bison]
+megalinter-reports/IDE-config.txt:81:7      - Unknown word (flycheck)   -- - flycheck: https://github.com
+	 Suggestions: [flyspeck, fleck, fleche, fleches, flyback]
+README.md:1:23      - Unknown word (cuda)       -- buildkite-llama-cpp-cuda
+	 Suggestions: [coda, cuba, cuds, c-uda, cauda]
+README.md:3:101     - Unknown word (CUDA)       -- packaging, and deploying CUDA-accelerated `llama.cpp
+	 Suggestions: [CODA, CUBA, CUDS, c-uda, C-UDA]
+README.md:5:17      - Unknown word (Sigrun)     -- Optimized for **Sigrun** (Intel Core i9-99
+	 Suggestions: [sigurd, Sigurd, Airgun, Sign, Siren]
+README.md:12:39     - Unknown word (CUDA)       -- llama.cpp` using NVIDIA CUDA 12 development images
+	 Suggestions: [CODA, CUBA, CUDS, c-uda, C-UDA]
+README.md:13:60     - Unknown word (DCMAKE)     -- Compute Capability 7.5 (`-DCMAKE_CUDA_ARCHITECTURES=
+	 Suggestions: [CMAKE, CCMAKE, DRAKE, DAMAGE, Drake]
+README.md:13:67     - Unknown word (CUDA)       -- Capability 7.5 (`-DCMAKE_CUDA_ARCHITECTURES=75`).
+	 Suggestions: [CODA, CUBA, CUDS, c-uda, C-UDA]
+README.md:14:54     - Unknown word (libggml)    -- modular shared libraries (`libggml-cuda.so`, `libllama
+	 Suggestions: [libxml, libgtk, libel, libssl, lingam]
+README.md:14:62     - Unknown word (cuda)       -- libraries (`libggml-cuda.so`, `libllama.so`,
+	 Suggestions: [coda, cuba, cuds, c-uda, cauda]
+README.md:14:73     - Unknown word (libllama)   -- `libggml-cuda.so`, `libllama.so`, `libllama-server
+	 Suggestions: [liblzma, libata, libava, liliana, libelant]
+README.md:14:88     - Unknown word (libllama)   -- so`, `libllama.so`, `libllama-server-impl.so`) into
+	 Suggestions: [liblzma, libata, libava, liliana, libelant]
+README.md:17:28     - Unknown word (buildx)     -- Single command `docker buildx bake deb` to compile
+	 Suggestions: [build, builds, built, build's, builded]
+README.md:24:107    - Unknown word (conffile)   -- default/llama-server` (conffile).
+	 Suggestions: [confide, confine, coffle, cheffile, codefile]
+README.md:31:21     - Unknown word (cuda)       -- buildkite-llama-cpp-cuda/
+	 Suggestions: [coda, cuba, cuds, c-uda, cauda]
+README.md:40:36     - Unknown word (GGUF)       -- download-model.sh # GGUF model download helper
+	 Suggestions: [GIFU, Gifu, GUFF, GULF, Gulf]
+README.md:55:8      - Unknown word (buildx)     -- docker buildx bake deb
+	 Suggestions: [build, builds, built, build's, builded]
+README.md:58:24     - Unknown word (buildx)     -- LLAMA_TAG=b4800 docker buildx bake deb
+	 Suggestions: [build, builds, built, build's, builded]
+README.md:63:78     - Unknown word (cuda)       -- ./dist/llama-server-cuda_<tag>_amd64.deb`.
+	 Suggestions: [coda, cuba, cuds, c-uda, cauda]
+README.md:65:31     - Unknown word (Sigrun)     -- Install the Package on Sigrun
+	 Suggestions: [sigurd, Sigurd, Airgun, Sign, Siren]
+README.md:67:41     - Unknown word (cuda)       -- ./dist/llama-server-cuda_*.deb
+	 Suggestions: [coda, cuba, cuds, c-uda, cauda]
+README.md:78:29     - Unknown word (GGUF)       -- Download or place your GGUF model** in `/models
+	 Suggestions: [GIFU, Gifu, GUFF, GULF, Gulf]
+README.md:80:29     - Unknown word (Qwen)       -- Helper script to download Qwen3.8-27B-Uncensored (
+	 Suggestions: [gwen, Gwen, owen, Owen, Wen]
+README.md:83:32     - Unknown word (Coletti)    -- specify `HF_REPO="JonathanColetti/Qwen3.8-27B-Uncensored
+	 Suggestions: [colette, Colette, colet, Colet, Colet's]
+README.md:83:40     - Unknown word (Qwen)       -- REPO="JonathanColetti/Qwen3.8-27B-Uncensored-GGUF
+	 Suggestions: [gwen, Gwen, owen, Owen, Wen]
+README.md:83:63     - Unknown word (GGUF)       -- Qwen3.8-27B-Uncensored-GGUF:Q4_K_M"` in `/etc/default
+	 Suggestions: [GIFU, Gifu, GUFF, GULF, Gulf]
+README.md:98:1      - Unknown word (journalctl) -- journalctl -u llama-server -f
+	 Suggestions: [journal, journald, journals, journal's, journalese]
+README.md:103:8     - Unknown word (buildx)     -- docker buildx bake image
+	 Suggestions: [build, builds, built, build's, builded]
+README.md:111:39    - Unknown word (jnix)       -- repository `git@github.com:jnix85/buildkite-llama-cpp
+	 Suggestions: [jinx, unix, Unix, UNIX, nix]
+README.md:125:42    - Unknown word (buildx)     -- package with `docker buildx bake deb`.
+	 Suggestions: [build, builds, built, build's, builded]
+README.md:127:45    - Unknown word (dpkg)       -- inspects the artifact with `dpkg`.
+	 Suggestions: [gpkg, GPKG, pkg, daks, dang]
+CSpell: Files checked: 13, skipped: 1, Issues found: 48 in 6 files.
+
+
+You can skip this misspellings by defining the following .cspell.json file at the root of your repository
+Of course, please correct real typos before :)
+
+{
+    "version": "0.2",
+    "language": "en",
+    "ignorePaths": [
+        "**/node_modules/**",
+        "**/vscode-extension/**",
+        "**/.git/**",
+        "**/.pnpm-lock.json",
+        ".vscode",
+        "package-lock.json",
+        "megalinter-reports"
+    ],
+    "words": [
+        "BUILDKIT",
+        "Buildx",
+        "CUDA",
+        "Coletti",
+        "DCMAKE",
+        "GGUF",
+        "Qwen",
+        "Sigrun",
+        "apheleia",
+        "buildx",
+        "conffile",
+        "cuda",
+        "dpkg",
+        "flycheck",
+        "jnix",
+        "journalctl",
+        "libggml",
+        "libllama",
+        "vison"
+    ]
+}
+
+
+You can also copy-paste megalinter-reports/.cspell.json at the root of your repository

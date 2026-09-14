@@ -1,6 +1,6 @@
 # Buildkite pipeline configuration reference.
 #
-# Copy this file to .buildkite/pipeline.yml and remove or adapt the example
+# Copy this file to .buildkite/pipeline-build.yml and remove or adapt the example
 # sections you do not need. YAML comments are intentional: they document the
 # supported shape of common Buildkite pipeline and step configuration without
 # enabling settings that depend on a particular Buildkite organization.

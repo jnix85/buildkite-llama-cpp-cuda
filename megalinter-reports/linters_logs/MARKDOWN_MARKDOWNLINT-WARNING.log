@@ -1,0 +1,8 @@
+Results of markdownlint linter (version 0.49.1)
+See documentation on https://megalinter.io/10.1.0/descriptors/markdown_markdownlint/
+-----------------------------------------------
+
+❌ [ERROR] for workspace /tmp/lint
+Linter raw log:
+README.md:30 error MD040/fenced-code-language Fenced code blocks should have a language specified [Context: "```"]
+

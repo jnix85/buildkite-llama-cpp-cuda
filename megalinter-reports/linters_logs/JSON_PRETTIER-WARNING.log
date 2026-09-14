@@ -1,0 +1,12 @@
+Results of prettier linter (version 3.9.6)
+See documentation on https://megalinter.io/10.1.0/descriptors/json_prettier/
+-----------------------------------------------
+
+❌ [ERROR] for workspace /tmp/lint
+Linter raw log:
+Checking formatting...
+[warn] .comp/session-memory/unknown.json
+[warn] megalinter-reports/.cspell.json
+[warn] megalinter-reports/IDE-config/.vscode/extensions.json
+[warn] Code style issues found in 3 files. Run Prettier with --write to fix.
+
