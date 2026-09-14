@@ -78,6 +78,11 @@ ln -sf /opt/llama.cpp/llama-server /usr/local/bin/llama-server
 ln -sf /opt/llama.cpp/llama-cli /usr/local/bin/llama-cli
 ln -sf /opt/llama.cpp/llama-bench /usr/local/bin/llama-bench
 ln -sf /opt/llama.cpp/bin/llama-server-launcher /usr/local/bin/llama-server-launcher
+if id -u llama-cpp >/dev/null 2>&1; then
+    mkdir -p /home/llama-cpp/models
+    chown -R llama-cpp:llama-cpp /home/llama-cpp 2>/dev/null || true
+    chmod 775 /home/llama-cpp/models 2>/dev/null || true
+fi
 if [ ! -d /models ]; then
     mkdir -p /models
     chown -R osadmin:osadmin /models 2>/dev/null || true

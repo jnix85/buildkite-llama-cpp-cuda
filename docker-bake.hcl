@@ -23,7 +23,7 @@ target "deb" {
   target = "export-deb"
   output = ["type=local,dest=./dist"]
   args = {
-    LLAMA_TAG = LLAMA_TAG
+    LLAMA_TAG = LLAMA_TAG != "" ? LLAMA_TAG : "v0.4.0"
     CUDA_ARCH = CUDA_ARCH
     CUDA_VERSION = CUDA_VERSION
     UBUNTU_VERSION = UBUNTU_VERSION
@@ -35,10 +35,10 @@ target "image" {
   target = "runtime"
   tags = [
     "llama-server-cuda:latest",
-    "llama-server-cuda:${LLAMA_TAG}"
+    "llama-server-cuda:${LLAMA_TAG != "" ? LLAMA_TAG : "v0.4.0"}"
   ]
   args = {
-    LLAMA_TAG = LLAMA_TAG
+    LLAMA_TAG = LLAMA_TAG != "" ? LLAMA_TAG : "v0.4.0"
     CUDA_ARCH = CUDA_ARCH
     CUDA_VERSION = CUDA_VERSION
     UBUNTU_VERSION = UBUNTU_VERSION
